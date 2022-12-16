@@ -8,11 +8,10 @@
 import UIKit
 import Combine
 
-class AreaDetailViewController: UIViewController {
+class AreaDetailViewController: BaseViewController {
     private var tableView = UITableView(frame: .zero, style: .grouped)
-    private var reuseIdentifier = "Cell"
+    private var dataSource: UITableViewDiffableDataSource<AnimalSectionType, AnyHashable>?
     var viewModel = AreaDetailViewModel()
-    var cancellable = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,8 +21,9 @@ class AreaDetailViewController: UIViewController {
     }
 
     private func setUI() {
-        setTableView()
         navigationItem.backButtonDisplayMode = .minimal
+        setTableView()
+        setDataSource()
     }
     
     private func setTableView() {
@@ -31,9 +31,9 @@ class AreaDetailViewController: UIViewController {
         tableView.register(AreaDetailTableViewCell.self)
         tableView.register(UITableViewCell.self)
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "HeaderView")
+        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "FooterView")
         tableView.delegate = self
-        tableView.dataSource = self
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFLOAT_MIN))
+//        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFLOAT_MIN))
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -42,13 +42,54 @@ class AreaDetailViewController: UIViewController {
         self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
     }
     
+    private func setDataSource() {
+        dataSource = UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, itemIdentifier in
+            if let zooAreaInfo = itemIdentifier as? ZooAreaInfo {
+                let cell = tableView.reuse(AreaDetailTableViewCell.self, for: indexPath)
+                cell.setData(zooAreaInfo)
+                return cell
+            } else if let animalInfo = itemIdentifier as? AnimalInfo {
+                let cell = tableView.reuse(UITableViewCell.self, for: indexPath)
+                cell.selectionStyle = .none
+                cell.accessoryType = .disclosureIndicator
+                
+                var content = cell.defaultContentConfiguration()
+                content.text = animalInfo.name
+                content.secondaryText = animalInfo.alsoknown
+                content.secondaryTextProperties.numberOfLines = 2
+                content.imageProperties.maximumSize = CGSize(width: 100, height: 100)
+                
+                if let image = animalInfo.image {
+                    content.image = image
+                } else {
+                    self.viewModel.getUrlImage(animalInfo.picUrl, index: indexPath.row)
+                }
+
+                cell.contentConfiguration = content
+                return cell
+            }
+            return UITableViewCell()
+        }
+        
+        dataSource?.defaultRowAnimation = .fade
+        tableView.dataSource = dataSource
+    }
+    
     private func binding() {
         viewModel.$animalInfos
             .receive(on: RunLoop.main)
             .sink {[weak self] data in
-                self?.tableView.reloadData()
+                self?.applySnapshot()
             }
             .store(in: &cancellable)
+    }
+    
+    private func applySnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<AnimalSectionType, AnyHashable>()
+        snapshot.appendSections([.zooAreaInfo, .animalInfo])
+        snapshot.appendItems([viewModel.areaInfo!], toSection: .zooAreaInfo)
+        snapshot.appendItems(viewModel.animalInfos, toSection: .animalInfo)
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
 
@@ -63,69 +104,28 @@ extension AreaDetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return section == 0 ? 0 : 50
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return nil
         }
-        return "動物資料"
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "HeaderView")
-        headerView?.contentView.backgroundColor = .gray
-        
+        var content = headerView?.defaultContentConfiguration()
+        content?.text = "動物資料"
+        headerView?.contentConfiguration = content
         return headerView
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "FooterView")
+        footerView?.contentView.backgroundColor = .systemGray2
+        
+        return footerView
+    }
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 30
-        }
-        return 0
-    }
-}
-
-extension AreaDetailViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }
-        return viewModel.animalInfos.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.reuse(AreaDetailTableViewCell.self, for: indexPath)
-            cell.selectionStyle = .none
-            cell.setData(viewModel.areaInfo)
-            return cell
-        } else {
-            let cell = tableView.reuse(UITableViewCell.self, for: indexPath)
-            cell.selectionStyle = .none
-            cell.accessoryType = .disclosureIndicator
-            
-            var content = cell.defaultContentConfiguration()
-            let data = viewModel.animalInfos[indexPath.row]
-            content.text = data.name
-            content.secondaryText = data.alsoknown
-            content.secondaryTextProperties.numberOfLines = 2
-            content.imageProperties.maximumSize = CGSize(width: 100, height: 100)
-            
-            if let image = data.image {
-                content.image = image
-            } else {
-                viewModel.getUrlImage(data.picUrl, index: indexPath.row)
-            }
-
-            cell.contentConfiguration = content
-            return cell
-        }
+        return 16
     }
 }

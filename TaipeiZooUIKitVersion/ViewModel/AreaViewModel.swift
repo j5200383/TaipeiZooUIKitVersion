@@ -8,9 +8,8 @@
 import Foundation
 import Combine
 
-class AreaViewModel {
+class AreaViewModel: BaseViewModel {
     @Published private (set) var zooAreaInfos = [ZooAreaInfo]()
-    private var cancellable = Set<AnyCancellable>()
     
     func getData() {
         guard let url = URL(string: "https://data.taipei/api/v1/dataset/5a0e5fbb-72f8-41c6-908e-2fb25eff9b8a?scope=resourceAquire") else {return}
@@ -22,14 +21,22 @@ class AreaViewModel {
             .compactMap({try? JSONSerialization.data(withJSONObject: $0)})
 //            .compactMap { String(data: $0, encoding:. utf8) }
             .decode(type: [ZooAreaInfo].self, decoder: JSONDecoder())
-            .sink(receiveCompletion: {print("completion:\($0)")}, receiveValue: {self.zooAreaInfos = $0})
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    print(error.localizedDescription)
+                }
+            }, receiveValue: {[weak self] data in
+                guard let `self` = self else {return}
+                self.zooAreaInfos = data
+            })
             .store(in: &cancellable)
     }
     
     func getUrlImage(_ urlString: String, index: Int) {
         guard let url = URL(string: urlString) else {return}
         ImageManager.shared.fetchImage(url: url) {[weak self] image in
-            self?.zooAreaInfos[index].image = image
+            guard let `self` = self else {return}
+            self.zooAreaInfos[index].image = image
         }
     }
 }

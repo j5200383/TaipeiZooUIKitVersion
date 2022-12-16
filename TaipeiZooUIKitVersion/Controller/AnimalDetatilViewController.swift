@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AnimalDetatilViewController: UIViewController {
+class AnimalDetatilViewController: BaseViewController {
     private var scrollView = UIScrollView()
     private var contentView = UIView()
     private var imageView = UIImageView()

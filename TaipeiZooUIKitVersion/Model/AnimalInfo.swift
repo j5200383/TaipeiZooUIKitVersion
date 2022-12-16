@@ -7,7 +7,12 @@
 
 import UIKit
 
-struct AnimalInfo: Codable {
+enum AnimalSectionType {
+    case zooAreaInfo
+    case animalInfo
+}
+
+struct AnimalInfo: Codable, Hashable {
     var name: String
     var enName: String
     var alsoknown: String

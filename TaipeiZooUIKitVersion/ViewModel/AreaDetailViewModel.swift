@@ -8,9 +8,8 @@
 import Foundation
 import Combine
 
-class AreaDetailViewModel {
+class AreaDetailViewModel: BaseViewModel {
     @Published private (set) var animalInfos = [AnimalInfo]()
-    private var cancellable = Set<AnyCancellable>()
     var areaInfo: ZooAreaInfo?
     
     func getData() {

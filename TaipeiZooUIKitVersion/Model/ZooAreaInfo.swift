@@ -9,7 +9,6 @@ import UIKit
 
 enum ZooAreaInfoSection {
     case zooArea
-    case zoo
 }
 
 struct ZooAreaInfo: Codable, Hashable {

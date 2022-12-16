@@ -21,6 +21,7 @@ class AreaDetailTableViewCell: UITableViewCell {
     }
     
     private func setUI() {
+        selectionStyle = .none
         setHeaderImageView()
         setInfoLabel()
     }
