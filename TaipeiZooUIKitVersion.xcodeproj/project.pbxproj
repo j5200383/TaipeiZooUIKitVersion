@@ -10,6 +10,8 @@
 		CEE2191F294ACC6700DB6316 /* UITableVIew+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE2191E294ACC6700DB6316 /* UITableVIew+.swift */; };
 		CEE21921294C53BF00DB6316 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE21920294C53BF00DB6316 /* BaseViewController.swift */; };
 		CEE21923294C54B600DB6316 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE21922294C54B600DB6316 /* BaseViewModel.swift */; };
+		CEE21926294C5A0900DB6316 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE21925294C5A0900DB6316 /* APIManager.swift */; };
+		CEE21928294C5E3400DB6316 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE21927294C5E3400DB6316 /* Response.swift */; };
 		CEF3CC542946D7260064C282 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC532946D7260064C282 /* AppDelegate.swift */; };
 		CEF3CC562946D7260064C282 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC552946D7260064C282 /* SceneDelegate.swift */; };
 		CEF3CC582946D7260064C282 /* AreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC572946D7260064C282 /* AreaViewController.swift */; };
@@ -20,7 +22,6 @@
 		CEF3CC6E294704E70064C282 /* AreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC6D294704E70064C282 /* AreaViewModel.swift */; };
 		CEF3CC70294718DE0064C282 /* ZooAreaInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC6F294718DE0064C282 /* ZooAreaInfo.swift */; };
 		CEF3CC72294722E20064C282 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC71294722E20064C282 /* ImageManager.swift */; };
-		CEF3CC75294723580064C282 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC74294723580064C282 /* UIImage+.swift */; };
 		CEF3CC77294854860064C282 /* AreaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC76294854860064C282 /* AreaDetailViewController.swift */; };
 		CEF3CC792948577B0064C282 /* AreaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC782948577B0064C282 /* AreaDetailViewModel.swift */; };
 		CEF3CC7B29486F620064C282 /* AnimalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3CC7A29486F620064C282 /* AnimalInfo.swift */; };
@@ -31,6 +32,8 @@
 		CEE2191E294ACC6700DB6316 /* UITableVIew+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableVIew+.swift"; sourceTree = "<group>"; };
 		CEE21920294C53BF00DB6316 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		CEE21922294C54B600DB6316 /* BaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		CEE21925294C5A0900DB6316 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		CEE21927294C5E3400DB6316 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		CEF3CC502946D7250064C282 /* TaipeiZooUIKitVersion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaipeiZooUIKitVersion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF3CC532946D7260064C282 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEF3CC552946D7260064C282 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,7 +46,6 @@
 		CEF3CC6D294704E70064C282 /* AreaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaViewModel.swift; sourceTree = "<group>"; };
 		CEF3CC6F294718DE0064C282 /* ZooAreaInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZooAreaInfo.swift; sourceTree = "<group>"; };
 		CEF3CC71294722E20064C282 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
-		CEF3CC74294723580064C282 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		CEF3CC76294854860064C282 /* AreaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaDetailViewController.swift; sourceTree = "<group>"; };
 		CEF3CC782948577B0064C282 /* AreaDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaDetailViewModel.swift; sourceTree = "<group>"; };
 		CEF3CC7A29486F620064C282 /* AnimalInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalInfo.swift; sourceTree = "<group>"; };
@@ -61,6 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CEE21924294C586B00DB6316 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				CEF3CC71294722E20064C282 /* ImageManager.swift */,
+				CEE21925294C5A0900DB6316 /* APIManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		CEF3CC472946D7250064C282 = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +91,7 @@
 		CEF3CC522946D7250064C282 /* TaipeiZooUIKitVersion */ = {
 			isa = PBXGroup;
 			children = (
+				CEE21924294C586B00DB6316 /* Manager */,
 				CEF3CC73294723420064C282 /* Extension */,
 				CEF3CC692946DC860064C282 /* ViewModel */,
 				CEF3CC682946DC7A0064C282 /* View */,
@@ -87,7 +99,6 @@
 				CEF3CC6A2946DC960064C282 /* Controller */,
 				CEF3CC532946D7260064C282 /* AppDelegate.swift */,
 				CEF3CC552946D7260064C282 /* SceneDelegate.swift */,
-				CEF3CC71294722E20064C282 /* ImageManager.swift */,
 				CEF3CC592946D7260064C282 /* Main.storyboard */,
 				CEF3CC5C2946D7260064C282 /* Assets.xcassets */,
 				CEF3CC5E2946D7260064C282 /* LaunchScreen.storyboard */,
@@ -101,6 +112,7 @@
 			children = (
 				CEF3CC6F294718DE0064C282 /* ZooAreaInfo.swift */,
 				CEF3CC7A29486F620064C282 /* AnimalInfo.swift */,
+				CEE21927294C5E3400DB6316 /* Response.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -137,7 +149,6 @@
 		CEF3CC73294723420064C282 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				CEF3CC74294723580064C282 /* UIImage+.swift */,
 				CEE2191E294ACC6700DB6316 /* UITableVIew+.swift */,
 			);
 			path = Extension;
@@ -222,11 +233,12 @@
 				CEE21921294C53BF00DB6316 /* BaseViewController.swift in Sources */,
 				CEF3CC792948577B0064C282 /* AreaDetailViewModel.swift in Sources */,
 				CEF3CC72294722E20064C282 /* ImageManager.swift in Sources */,
+				CEE21928294C5E3400DB6316 /* Response.swift in Sources */,
 				CEF3CC6E294704E70064C282 /* AreaViewModel.swift in Sources */,
 				CEF3CC70294718DE0064C282 /* ZooAreaInfo.swift in Sources */,
-				CEF3CC75294723580064C282 /* UIImage+.swift in Sources */,
 				CEE21923294C54B600DB6316 /* BaseViewModel.swift in Sources */,
 				CEF3CC77294854860064C282 /* AreaDetailViewController.swift in Sources */,
+				CEE21926294C5A0900DB6316 /* APIManager.swift in Sources */,
 				CEF3CC6C2946DDE90064C282 /* AreaDetailTableViewCell.swift in Sources */,
 				CEF3CC562946D7260064C282 /* SceneDelegate.swift in Sources */,
 			);

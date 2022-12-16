@@ -122,11 +122,18 @@ class AnimalDetatilViewController: BaseViewController {
     
     func setData(_ data: AnimalInfo) {
         title = data.name
-        imageView.image = data.image
         nameLabel.text = data.name + "\n" + data.enName
         alsoknownLabel.text = "別名\n\(data.alsoknown)"
         featureLabel.text = "特徵\n\(data.feature)"
         behaviorLabel.text = "行爲\n\(data.behavior)"
         updateLabel.text = "最後更新：\(data.update)"
+        
+        if let image = data.image {
+            imageView.image = image
+        } else if let url = URL(string: data.picUrl) {
+            ImageManager.shared.fetchImage(url: url) { image in
+                self.imageView.image = image
+            }
+        }
     }
 }

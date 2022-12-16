@@ -82,6 +82,26 @@ class AreaDetailViewController: BaseViewController {
                 self?.applySnapshot()
             }
             .store(in: &cancellable)
+        
+        viewModel.$loadingEven
+            .receive(on: RunLoop.main)
+            .sink {[weak self] loadingEven in
+                switch loadingEven {
+                case .loading:
+                    self?.startLoadingView()
+                case .stop:
+                    self?.stopLoadingView()
+                }
+            }
+            .store(in: &cancellable)
+        
+        viewModel.$errorMessage
+            .receive(on: RunLoop.main)
+            .sink {[weak self] message in
+                guard let message = message else {return}
+                self?.showAlert(message: message)
+            }
+            .store(in: &cancellable)
     }
     
     private func applySnapshot() {
