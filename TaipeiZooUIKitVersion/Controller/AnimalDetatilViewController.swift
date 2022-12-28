@@ -21,14 +21,14 @@ class AnimalDetatilViewController: BaseViewController {
         super.viewDidLoad()
         setUI()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        scrollView.layoutIfNeeded()
-        scrollView.contentSize.height = contentView.frame.height
-    }
-    
+        
     private func setUI() {
+        view.backgroundColor = .white
+        
+        let barAppearance =  UINavigationBarAppearance()
+        barAppearance.configureWithDefaultBackground()
+        navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
+
         setScrollView()
         setContentView()
         setImageView()
@@ -56,7 +56,12 @@ class AnimalDetatilViewController: BaseViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.leftAnchor.constraint(equalTo: scrollView.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
         contentView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        let contentViewHeightAnchor = contentView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: 16)
+        contentViewHeightAnchor.priority = UILayoutPriority(rawValue: 1)
+        contentViewHeightAnchor.isActive = true
     }
     
     private func setImageView() {
@@ -117,7 +122,7 @@ class AnimalDetatilViewController: BaseViewController {
         updateLabel.topAnchor.constraint(equalTo: behaviorLabel.bottomAnchor, constant: 36).isActive = true
         updateLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16).isActive = true
         updateLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16).isActive = true
-        updateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16).isActive = true
+        updateLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -16).isActive = true
     }
     
     func setData(_ data: AnimalInfo) {
